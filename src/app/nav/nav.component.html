@@ -1,0 +1,8 @@
+<nav>
+  <ul>
+    <li *ngIf = "!isAuthenticated"><a routerLink="/login">login</a></li>
+    <li *ngIf = "!isAuthenticated"><a routerLink="/signup">Register</a></li>
+    <li *ngIf = "isAuthenticated"><a routerLink=""(click) = "logOut()">Log Out</a></li>
+    <li><a routerLink="/contact">Contact</a></li>
+  </ul>
+</nav>
