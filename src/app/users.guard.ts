@@ -13,5 +13,11 @@ export const usersGuard: CanActivateFn = (route, state) => {
 };
 
 export const adminGuard: CanActivateFn = (route, state) => {
-  return true;
+  if(inject(UsersService).isAdmin()){
+    return true;
+  }
+  else{
+    inject(Router).navigate(['/login']);
+    return false;
+  }
 };
