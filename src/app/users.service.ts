@@ -21,14 +21,14 @@ export class UsersService {
     }
   }
 
-  async register(userData:any, token:string): Promise<any> {
+  async register(userData:any): Promise<any> {
     const url = this.BASE_URL + 'auth/register';
-    const headers =  new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-    })
+    // const headers =  new HttpHeaders({
+    //   'Authorization': `Bearer ${token}`,
+    // })
 
     try {
-      const response = await this.http.post<any>(url, userData, {headers}).toPromise();
+      const response = await this.http.post<any>("http://localhost:8080/auth/register", userData).toPromise();
       return response;
 
     }catch(error){
