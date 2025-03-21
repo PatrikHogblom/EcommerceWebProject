@@ -1,34 +1,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
 
-  private BASE_URL = "http://localhost:8080/"; //url of our backend application
+  private BASE_URL = "http://localhost:8080"; //url of our backend application
 
   constructor(private http: HttpClient) { }
+
+  register(userData:any): Observable<any> {
+    const url = `${this.BASE_URL}/auth/register`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+
+    try
+    {
+      const response = this.http.post<any>(url, userData, { headers });
+      return response;
+    }
+    catch (error)
+    {
+      throw error;
+    }
+  }
+
 
   async login(email:string, password:string): Promise<any> {
     const url = this.BASE_URL + 'auth/login';
     try {
       const response = await this.http.post<any>(url, {email, password}).toPromise();
-      return response;
-
-    }catch(error){
-      throw error;
-    }
-  }
-
-  async register(userData:any): Promise<any> {
-    const url = this.BASE_URL + 'auth/register';
-    // const headers =  new HttpHeaders({
-    //   'Authorization': `Bearer ${token}`,
-    // })
-
-    try {
-      const response = await this.http.post<any>("http://localhost:8080/auth/register", userData).toPromise();
       return response;
 
     }catch(error){

@@ -37,22 +37,20 @@ export class RegisterComponent {
     const confirmRegister = confirm('Are you sure you want to register the user?');
     if (!confirmRegister) return;
 
-    try{
-
-      const response = await this.usersService.register(this.formData);
-      if(response.status === 200){
-        //alert('User registered successfully');
-        this.router.navigate(['/login']);
-      }
-      else{
-        this.errorMessage = 'There was an error registering the user';
-        this.showError(this.errorMessage);
-      }
-    }catch(error)
-    {
-      this.errorMessage = error.message;
-      this.showError(this.errorMessage);
-    }
+      this.usersService.register(this.formData).subscribe({
+        next: (response) => {
+          if (response.status === 200)
+          {
+            alert('User registered successfully');
+            this.router.navigate(['/login']);
+          }
+        },
+        error: (error) =>
+        {
+          const errorMessage = typeof error.error === 'string' ? error.error : error.error?.message || 'An error occurred during registration';
+          this.showError(errorMessage);
+        }
+      });
   }
 
   showError(message: string) {
