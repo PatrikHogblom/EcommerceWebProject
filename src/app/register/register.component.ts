@@ -1,63 +1,67 @@
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UsersService } from './../users.service';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { DemoAngularMaterialModule } from '../DemoAngularMaterialModule';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, CommonModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    DemoAngularMaterialModule
+  ],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
 
-  constructor(private readonly usersService: UsersService, private readonly router: Router){}
+  registerForm: FormGroup;
+  hidePassword = true; // Toggle for password visibility
 
-  formData: any = {
-    name: '',
-    email: '',
-    password: '',
-    role: 'USER',
-    city: '',
-  };
-  errorMessage: string = '';
+  constructor(
+    private fb: FormBuilder,
+    private usersService: UsersService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {
+    this.registerForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      city: [''],
+      role: ['USER']
+    });
+  }
 
-  async handleSumbit()
-  {
-    //check that all fields aren't empty
-    if(!this.formData.name || !this.formData.email || !this.formData.password || !this.formData.city)
-    {
-      this.errorMessage = 'Please fill in all fields';
-      this.showError(this.errorMessage);
+  togglePasswordVisibility() {
+        this.hidePassword = !this.hidePassword;
+  }
+
+  handleSubmit(): void {
+    if (this.registerForm.invalid) {
+      this.showSnackbar('Please fill in all required fields', 'Close', 'error-snackbar');
       return;
     }
 
-    //confirm registration with user
-    const confirmRegister = confirm('Are you sure you want to register the user?');
-    if (!confirmRegister) return;
-
-      this.usersService.register(this.formData).subscribe({
-        next: (response) => {
-          if (response.status === 200)
-          {
-            alert('User registered successfully');
-            this.router.navigate(['/login']);
-          }
-        },
-        error: (error) =>
-        {
-          const errorMessage = typeof error.error === 'string' ? error.error : error.error?.message || 'An error occurred during registration';
-          this.showError(errorMessage);
-        }
-      });
+    this.usersService.register(this.registerForm.value).subscribe({
+      next: () => {
+        this.showSnackbar('User registered successfully', 'Close', 'success-snackbar');
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        const errorMessage = typeof error.error === 'string' ? error.error : error.error?.message || 'An error occurred';
+        this.showSnackbar(errorMessage, 'Close', 'error-snackbar');
+      }
+    });
   }
 
-  showError(message: string) {
-    this.errorMessage = message;
-    setTimeout(() => {
-      this.errorMessage = ''; // Clear the error message after the specified duration
-    }, 10000);
+  private showSnackbar(message: string, action: string, panelClass: string) {
+    this.snackBar.open(message, action, {
+      duration: 5000,
+      panelClass: [panelClass],
+    });
   }
-
 }
