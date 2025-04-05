@@ -30,13 +30,19 @@ export class UsersService {
   }
 
 
-  async login(email:string, password:string): Promise<any> {
-    const url = this.BASE_URL + 'auth/login';
-    try {
-      const response = await this.http.post<any>(url, {email, password}).toPromise();
+  login(email:string, password:string): Observable<any> {
+    const url = `${this.BASE_URL}/auth/login`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+    try
+    {
+      const response = this.http.post<any>(url, {email, password} , { headers });
       return response;
-
-    }catch(error){
+    }
+    catch (error)
+    {
       throw error;
     }
   }
