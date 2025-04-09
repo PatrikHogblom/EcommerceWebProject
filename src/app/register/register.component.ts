@@ -19,7 +19,7 @@ import { DemoAngularMaterialModule } from '../DemoAngularMaterialModule';
 export class RegisterComponent {
 
   registerForm: FormGroup;
-  hidePassword = true; // Toggle for password visibility
+  showPassword: boolean = false; // Toggle for password visibility
 
   constructor(
     private fb: FormBuilder,
@@ -37,7 +37,7 @@ export class RegisterComponent {
   }
 
   togglePasswordVisibility() {
-        this.hidePassword = !this.hidePassword;
+        this.showPassword = !this.showPassword;
   }
 
   handleSubmit(): void {

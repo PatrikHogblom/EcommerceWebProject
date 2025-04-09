@@ -2,21 +2,28 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { UsersService } from '../users.service';
+import { DemoAngularMaterialModule } from '../DemoAngularMaterialModule';
 
 @Component({
   selector: 'app-nav',
-  imports: [CommonModule, RouterOutlet, RouterLink],
+  imports: [CommonModule, RouterOutlet, RouterLink, DemoAngularMaterialModule],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.scss'
 })
 export class NavComponent implements OnInit {
 
-  constructor(private readonly UsersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) { }
 
   ngOnInit(): void {
-    this.isAuthenticated = this.UsersService.isAuthenticated();
-    this.isAdmin = this.UsersService.isAdmin();
-    this.isUser = this.UsersService.isUser();
+    this.usersService.authStatus$.subscribe(() => {
+      this.isAuthenticated = this.usersService.isAuthenticated();
+      this.isAdmin = this.usersService.isAdmin();
+      this.isUser = this.usersService.isUser();
+
+      console.log("admin? :", this.isAdmin);
+      console.log("user? :", this.isUser);
+    });
+
   }
 
 
@@ -25,7 +32,7 @@ export class NavComponent implements OnInit {
   isUser: boolean = false;
 
   logOut():void {
-    this.UsersService.logOut();
+    this.usersService.logOut();
     this.isAuthenticated = false;
     this.isAdmin = false;
     this.isUser = false;

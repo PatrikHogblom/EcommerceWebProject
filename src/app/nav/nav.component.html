@@ -1,8 +1,43 @@
-<nav>
+<!-- <nav>
   <ul>
     <li *ngIf = "!isAuthenticated"><a routerLink="/login">login</a></li>
     <li *ngIf = "!isAuthenticated"><a routerLink="/register">Register</a></li>
     <li *ngIf = "isAuthenticated"><a routerLink=""(click) = "logOut()">Log Out</a></li>
     <li><a routerLink="/contact">Contact</a></li>
   </ul>
-</nav>
+</nav> -->
+
+
+<mat-toolbar *ngIf="isAuthenticated">
+  <mat-toolbar-row>
+    <span>My App</span>
+    <button *ngIf="isAdmin" mat-button>Admin menu1</button>
+    <button *ngIf="isAdmin" mat-button>Admin menu2</button>
+    <button *ngIf="isAdmin" mat-button>Admin menu3</button>
+    <button *ngIf="isUser" mat-button>User menu1</button>
+    <button *ngIf="isUser" mat-button>User menu2</button>
+    <button *ngIf="isUser" mat-button>User menu3</button>
+
+    <span class="example-spacer"></span>
+    <button mat-button (click)="logOut()" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      Log Out
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<!-- Guest navbar-->
+<mat-toolbar *ngIf="!isAuthenticated">
+  <mat-toolbar-row>
+    <span>My App</span>
+    <button mat-button>menu1</button>
+    <button mat-button>menu2</button>
+    <button mat-button>menu3</button>
+    <span class="example-spacer"></span>
+    <button mat-button routerLink ="/login" routerLinkActive="active" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      Login
+    </button>
+    <button mat-button routerLink ="/register" routerLinkActive="active" type="password" aria-label="Example icon-button with share icon">
+      Sign up
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
