@@ -1,8 +1,8 @@
 import { Token } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 
-const TOKEN = 'ecom-token';
-const USER = 'ecom-user';
+const TOKEN = 'token';
+const USER = 'user';
 
 @Injectable({
   providedIn: 'root'

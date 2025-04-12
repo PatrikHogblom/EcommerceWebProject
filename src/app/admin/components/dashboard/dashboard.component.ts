@@ -24,10 +24,11 @@ export class DashboardComponent {
     this.adminService.GetProducts().subscribe(
       res => {
         res.forEach(element => {
-          element.processedImg = 'data:image/jpeg;base64,' + element.byteImg;
+          element.processedImg = 'data:image/jpeg;base64,' + element.byteimg;
           this.products.push(element);
         });
       }
+
     );
   }
 

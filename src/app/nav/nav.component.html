@@ -11,8 +11,9 @@
 <mat-toolbar *ngIf="isAuthenticated">
   <mat-toolbar-row>
     <span>My App</span>
-    <button *ngIf="isAdmin" mat-button>Admin menu1</button>
-    <button *ngIf="isAdmin" mat-button>Admin menu2</button>
+    <button *ngIf="isAdmin" mat-button routerLink ="/dashboard" routerLinkActive="active">Dashboard</button>
+    <button *ngIf="isAdmin" mat-button routerLink ="/category" routerLinkActive="active">Category</button>
+    <button *ngIf="isAdmin" mat-button routerLink ="/product" routerLinkActive="active">Product</button>
     <button *ngIf="isAdmin" mat-button>Admin menu3</button>
     <button *ngIf="isUser" mat-button>User menu1</button>
     <button *ngIf="isUser" mat-button>User menu2</button>
