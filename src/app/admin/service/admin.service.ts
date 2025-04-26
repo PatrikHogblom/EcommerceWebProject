@@ -36,6 +36,18 @@ export class AdminService {
   GetProducts(): Observable<any>{
     return this.http.get(BASIC_URL + "admin/get-products", {
       headers: this.createAuthorizationHeader(),
+    })
+  }
+
+  GetProductsByName(name: any): Observable<any>{
+    return this.http.get(BASIC_URL + `admin/search/${name}`, {
+      headers: this.createAuthorizationHeader(),
+    })
+  }
+
+  deleteProduct(productId:any): Observable<any>{
+    return this.http.delete(BASIC_URL + `admin/delete-product/${productId}`, {
+      headers: this.createAuthorizationHeader(),
 
     })
   }
